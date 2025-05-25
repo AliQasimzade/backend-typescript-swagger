@@ -1,0 +1,51 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Module {
+  id_hash        String        @id @default(uuid())
+  name           String
+  key            String        @unique
+  icon           String
+  display_order  Int
+  description    String
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+
+  pages          ModulePage[]
+}
+
+model ModulePage {
+  id_hash        String     @id @default(uuid())
+  name           String
+  key            String        @unique
+  icon           String
+  display_order  Int
+  moduleId       String
+
+  module         Module     @relation(fields: [moduleId], references: [id_hash])
+  createdAt      DateTime   @default(now())
+  updatedAt      DateTime   @updatedAt
+}
+
+
+model Users {
+  id_hash        String     @id @default(uuid())
+  username  String     @unique(map: "Users_username_key")
+  password  String
+  isActive  Boolean    @default(false)
+  role      users_role @default(USER)
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+}
+
+enum users_role {
+  ADMIN
+  USER
+}
