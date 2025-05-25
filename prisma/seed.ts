@@ -1,4 +1,4 @@
-import { PrismaClient } from '../generated/prisma';
+import { PrismaClient, RightKey, CompanyTypeKey } from '../generated/prisma';
 import bcrypt from 'bcrypt';
 
 const prisma = new PrismaClient();
@@ -125,7 +125,48 @@ async function main() {
     });
   }
 
-  console.log('✅ Modules and pages seeded!');
+  const rights = [
+    {
+      display_text: "Baxış icazəsi",
+      key: RightKey.view
+    },
+    {
+      display_text: "Tam icazə",
+      key: RightKey.full
+    }
+  ];
+
+  for (const right of rights) {
+    await prisma.right.upsert({
+      where: { key: right.key },
+      update: {},
+      create: right,
+    });
+  }
+
+  const companyTypes = [
+    {
+      display_text: "umumi",
+      key: CompanyTypeKey.umumi
+    },
+    {
+      display_text: "Lab",
+      key: CompanyTypeKey.lab
+    },
+    {
+      display_text: "Analiz 3",
+      key: CompanyTypeKey.analiz_3
+    }
+  ];
+
+
+  for (const companyType of companyTypes) {
+    await prisma.companyType.upsert({
+      where: { key: companyType.key },
+      update: {},
+      create: companyType,
+    });
+  }
 }
 
 main()

@@ -8,6 +8,32 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Users {
+  id_hash        String     @id @default(uuid())
+  username  String     @unique(map: "Users_username_key")
+  password  String
+  isActive  Boolean    @default(false)
+  role      users_role @default(USER)
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+}
+
+enum users_role {
+  ADMIN
+  USER
+}
+
+enum RightKey { 
+  view
+  full
+}
+
+enum CompanyTypeKey {
+  umumi
+  lab
+  analiz_3
+}
+
 model Module {
   id_hash        String        @id @default(uuid())
   name           String
@@ -34,18 +60,20 @@ model ModulePage {
   updatedAt      DateTime   @updatedAt
 }
 
-
-model Users {
-  id_hash        String     @id @default(uuid())
-  username  String     @unique(map: "Users_username_key")
-  password  String
-  isActive  Boolean    @default(false)
-  role      users_role @default(USER)
-  createdAt DateTime   @default(now())
-  updatedAt DateTime   @updatedAt
+model Right {
+   value_hash        String     @id @default(uuid())
+   display_text      String
+   key               RightKey   @unique
 }
 
-enum users_role {
-  ADMIN
-  USER
+model CompanyType {
+   value_hash        String     @id @default(uuid())
+   display_text      String
+   key               CompanyTypeKey   @unique
+}
+
+model Country {
+  id_hash     String     @id @default(uuid())
+  name        String @unique
+  code        String
 }

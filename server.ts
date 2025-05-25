@@ -2,6 +2,9 @@ import express, { Request, Response, NextFunction } from "express";
 import dotenv from "dotenv";
 import usersRoutes from "./routes/users.routes";
 import modulesRoutes from './routes/modules.routes';
+import rightsRoutes from "./routes/rights.routes";
+import companyTypesRoutes from "./routes/companyTypes.routes";
+import countriesRoutes from "./routes/country.routes"
 import { setupSwagger } from './docs/swagger';
 
 dotenv.config();
@@ -12,6 +15,9 @@ const PORT = process.env.PORT || 3000;
 app.use(express.json());
 app.use('/api', usersRoutes);
 app.use('/api', modulesRoutes);
+app.use('/api', rightsRoutes);
+app.use('/api', companyTypesRoutes);
+app.use('/api', countriesRoutes)
 
 // Global error handler
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {

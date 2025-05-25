@@ -2,6 +2,9 @@ import swaggerUi from 'swagger-ui-express';
 import { Express } from 'express';
 import { authSwagger } from './auth.swagger';
 import { modulesSwagger } from './modules.swagger';
+import { rightsSwagger } from './rights.swagger';
+import { companyTypesSwagger } from './compnayTypes.swagger';
+import { countrySwagger } from './country.swagger';
 
 const swaggerDocumentAccount = {
     openapi: '3.0.0',
@@ -21,7 +24,8 @@ const swaggerDocumentAccount = {
     },
     security: [{ bearerAuth: [] }],
     paths: {
-        ...authSwagger
+        ...authSwagger,
+        ...rightsSwagger
     },
 };
 
@@ -44,6 +48,8 @@ const swaggerDocumentCatalog = {
     security: [{ bearerAuth: [] }],
     paths: {
         ...modulesSwagger,
+        ...companyTypesSwagger,
+        ...countrySwagger
     }
 
 };
