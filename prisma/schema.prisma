@@ -4,8 +4,8 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
-  url      = env("DATABASE_URL")
+  provider = "sqlite"
+  url      = "file:./dev.db"
 }
 
 model Users {
@@ -76,4 +76,23 @@ model Country {
   id_hash     String     @id @default(uuid())
   name        String @unique
   code        String
+  inserted_user         String
+  inserted_user_id_hash String
+  is_deleted  Boolean   @default(false)
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+  districts   District[]
+}
+
+model District {
+   id_hash    String     @id @default(uuid())
+   name       String @unique
+   country_name     String
+   country_id_hash String
+   inserted_user         String
+   inserted_user_id_hash String
+   country    Country    @relation(fields: [country_id_hash], references: [id_hash])
+   createdAt  DateTime   @default(now())
+   updatedAt  DateTime   @updatedAt
+   is_deleted Boolean    @default(false)
 }
